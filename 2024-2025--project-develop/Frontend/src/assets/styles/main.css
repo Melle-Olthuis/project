@@ -1,0 +1,68 @@
+@import './base.css';
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+:root {
+  --color-background: #ececec;
+  --color-primary: #9fd3c7;
+  --color-secondary: #f0f0f0;
+  --color-text: #142d4c;
+  --color-text-secondary: #385170;
+  --default-padding: 2rem;
+}
+
+#app {
+  margin: 0;
+  padding: var(--default-padding);
+  font-weight: normal;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main {
+  align-items: center; /* Center vertically */
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-primary);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh; /* Ensure the body takes the full height of the viewport */
+    margin: 0; /* Remove default margin */
+  }
+}
+
+.login-container {
+  background-color: var(--color-secondary);
+  padding: var(--default-padding);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-error {
+  color: red;
+  margin-top: 1rem;
+}
