@@ -1,1 +1,5 @@
-/.vscode
+node_modules
+.vscode
+Frontend/node_modules
+Backend/target
+
