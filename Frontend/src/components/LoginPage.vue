@@ -42,7 +42,7 @@ const handleSubmit = async () => {
     });
 
     localStorage.setItem('token', response.data.token);
-    router.push('/home'); // Pas aan naar je daadwerkelijke route
+    router.push(Frontend/src/components/HomePage.vue); 
 
   } catch (error) {
     if (error.response && error.response.status === 401) {
