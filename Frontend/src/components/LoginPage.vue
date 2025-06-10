@@ -42,8 +42,7 @@ const handleSubmit = async () => {
     });
 
     localStorage.setItem('token', response.data.token);
-    router.push(Frontend/src/components/HomePage.vue); 
-
+    router.push('/');
   } catch (error) {
     if (error.response && error.response.status === 401) {
       errorMessage.value = 'Invalid credentials.';
