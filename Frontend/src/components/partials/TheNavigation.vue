@@ -10,12 +10,17 @@
     <div class="nav-right">
       <img src="@/assets/img/weather.png" alt="Weather Icon" class="weather-icon" />
       <span>{{ currentTemperature }}</span>
+      <button class="theme-toggle" @click="theme.toggleTheme">
+        {{ theme.isDark ? '☀️' : '🌙' }}
+      </button>
     </div>
   </nav>
 </template>
 
 <script setup>
-const currentTemperature = '15°C'; // Example temperature data
+import { useThemeStore } from '../../stores/theme'
+const currentTemperature = '15°C' // Example temperature data
+const theme = useThemeStore()
 </script>
 
 <style scoped>
@@ -54,5 +59,13 @@ const currentTemperature = '15°C'; // Example temperature data
 .weather-icon {
   width: 30px;
   height: 30px;
+}
+
+.theme-toggle {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-left: 0.5rem;
 }
 </style>

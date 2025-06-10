@@ -9,6 +9,7 @@
         <option value="">Alle tags</option>
         <option v-for="tag in allTags" :key="tag" :value="tag">{{ tag }}</option>
       </select>
+      <button @click="exportNotes">Exporteren</button>
     </div>
 
     <div class="notes-list">
@@ -61,6 +62,9 @@
           class="tags-input"
         />
         <small>Tags: {{ note.tags.join(', ') }}</small>
+        <div class="tag-icons">
+          <span v-for="tag in note.tags" :key="tag">{{ iconForTag(tag) }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -69,6 +73,17 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
+
+const tagIcons = {
+  school: '📚',
+  shopping: '🛒',
+  work: '💼',
+  personal: '🙋',
+};
+
+function iconForTag(tag) {
+  return tagIcons[tag.toLowerCase()] || '🔖';
+}
 
 let noteId = 1;
 const notes = ref([]);
@@ -117,6 +132,10 @@ function deleteNote(id) {
 
 function archiveNote(note) {
   note.archived = true;
+}
+
+function exportNotes() {
+  window.print();
 }
 
 function updateTags(note) {
@@ -301,5 +320,9 @@ onMounted(() => {
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 0.5rem;
+}
+
+.tag-icons span {
+  margin-right: 0.25rem;
 }
 </style>
