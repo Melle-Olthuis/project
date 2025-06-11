@@ -33,5 +33,5 @@ npm install
 npm run dev
 ```
 
-Once both servers are running, open the application in your browser and use the login page to create an account and sign in.
+Once both servers are running, open the application in your browser. Gebruik de registerpagina om een nieuw account aan te maken en log vervolgens in via de loginpagina.
 
