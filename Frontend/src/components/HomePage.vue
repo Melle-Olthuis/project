@@ -71,8 +71,9 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import axios from 'axios';
+import { useUserStore } from '../stores/user';
 
 const tagIcons = {
   school: '📚',
@@ -87,6 +88,7 @@ function iconForTag(tag) {
 
 let noteId = 1;
 const notes = ref([]);
+const userStore = useUserStore();
 const searchTerm = ref('');
 const selectedTag = ref('');
 
@@ -146,17 +148,29 @@ function updateTags(note) {
 }
 
 onMounted(() => {
-  axios
-    .get('http://localhost:8080/api/notes')
-    .then((response) => {
-      notes.value = response.data.map((n) => ({
-        ...n,
-        tagsInput: n.tags ? n.tags.join(', ') : '',
-      }));
-      noteId = Math.max(...notes.value.map((n) => n.id), 0) + 1;
-    })
-    .catch((err) => console.error('Kan notities niet ophalen:', err));
-});
+  const saved = localStorage.getItem(`notes_${userStore.username}`)
+  if (saved) {
+    notes.value = JSON.parse(saved)
+    noteId = Math.max(...notes.value.map((n) => n.id), 0) + 1
+  } else {
+    axios
+      .get('http://localhost:8080/api/notes')
+      .then((response) => {
+        notes.value = response.data.map((n) => ({
+          ...n,
+          tagsInput: n.tags ? n.tags.join(', ') : '',
+        }))
+        noteId = Math.max(...notes.value.map((n) => n.id), 0) + 1
+      })
+      .catch((err) => console.error('Kan notities niet ophalen:', err))
+  }
+})
+
+watch(notes, (val) => {
+  if (userStore.username) {
+    localStorage.setItem(`notes_${userStore.username}`, JSON.stringify(val))
+  }
+}, { deep: true })
 </script>
 
 <style scoped>
