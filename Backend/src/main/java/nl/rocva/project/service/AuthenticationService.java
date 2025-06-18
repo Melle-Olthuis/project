@@ -32,23 +32,26 @@ public class AuthenticationService {
         return passwordEncoder.matches(plainPassword, hashedPassword);
     }
 
-    public User register(String username, String password) {
-        if (authenticationRepository.existsByUsername(username)) {
+    public User registerUser(String username, String email, String plainPassword) {
+        if (authenticationRepository.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException("Username already exists");
         }
+        if (authenticationRepository.findByEmail(email).isPresent()) {
+            throw new IllegalArgumentException("Email already exists");
+        }
 
-        String hashedPassword = hashPassword(password);
-        User newUser = new User(username, hashedPassword);
-
-        return authenticationRepository.save(newUser);
+        String hashedPassword = hashPassword(plainPassword);
+        User user = new User();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(hashedPassword);
+        user.setRole("USER");
+        return authenticationRepository.save(user);
     }
 
     public User login(String username, String password) {
-        User user = authenticationRepository.findByUsername(username);
-
-        if (user == null) {
-            throw new IllegalArgumentException("Invalid username");
-        }
+        User user = authenticationRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid username"));
 
         if (!verifyPassword(password, user.getPassword())) {
             throw new IllegalArgumentException("Invalid password");
