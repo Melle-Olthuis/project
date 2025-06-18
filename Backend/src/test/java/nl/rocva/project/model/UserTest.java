@@ -25,7 +25,11 @@ public class UserTest {
 
     @Test
     public void testValidEmail() {
-        User user = new User("jan@example.com", "welkom123");
+        User user = new User();
+        user.setUsername("jan");
+        user.setEmail("jan@example.com");
+        user.setPassword("welkom123");
+        user.setRole("USER");
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
@@ -34,13 +38,17 @@ public class UserTest {
 
     @Test
     public void testInvalidEmail() {
-        User user = new User("geen-geldig-email", "welkom123");
+        User user = new User();
+        user.setUsername("jan");
+        user.setEmail("geen-geldig-email");
+        user.setPassword("welkom123");
+        user.setRole("USER");
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
 
         assertFalse(violations.isEmpty(), "Er moet een validatiefout zijn voor een ongeldig e-mailadres");
 
         ConstraintViolation<User> violation = violations.iterator().next();
-        assertEquals("username", violation.getPropertyPath().toString());
+        assertEquals("email", violation.getPropertyPath().toString());
     }
 }
