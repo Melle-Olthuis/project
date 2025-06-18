@@ -42,12 +42,15 @@ public class AuthenticationServiceTest {
         AuthenticationRepository mockRepository = mock(AuthenticationRepository.class);
         AuthenticationService authenticationService = new AuthenticationService(mockRepository);
 
-        when(mockRepository.existsByUsername(username)).thenReturn(false);
-        when(mockRepository.findByUsername(username))
-                .thenReturn(new User(username, authenticationService.hashPassword(password)));
+        String email = "test@example.com";
+        User storedUser = new User();
+        storedUser.setUsername(username);
+        storedUser.setEmail(email);
+        storedUser.setPassword(authenticationService.hashPassword(password));
+        storedUser.setRole("USER");
 
-        // Register the user
-        authenticationService.register(username, password);
+        when(mockRepository.findByUsername(username)).thenReturn(java.util.Optional.of(storedUser));
+        when(mockRepository.findByUsername("nonExistentUser")).thenReturn(java.util.Optional.empty());
 
         // Attempt to login with correct credentials
         User loggedInUser = authenticationService.login(username, password);
