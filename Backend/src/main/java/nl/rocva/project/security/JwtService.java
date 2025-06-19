@@ -14,17 +14,18 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
-    // In a real application this key should be stored securely
-    private static final String SECRET = "0123456789abcdef0123456789abcdef";
+    
+    // 🔐 Sterke geheime sleutel in Base64 (256-bit, voor HS256). Vervang door je eigen veilige waarde!
+    private static final String SECRET = "MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=";
 
     private Key getSigningKey() {
-        byte[] bytes = Decoders.BASE64.decode(SECRET);
-        return Keys.hmacShaKeyFor(bytes);
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public String generateToken(UserDetails userDetails) {
         Date now = new Date();
-        Date expiry = new Date(now.getTime() + 86400000); // 1 day
+        Date expiry = new Date(now.getTime() + 86400000); // 1 dag geldig
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(now)
