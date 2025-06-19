@@ -38,7 +38,7 @@ const handleSubmit = async () => {
   }
 
   try {
-    const response = await axios.post('http://localhost:8080/api/auth/login', {
+    const response = await axios.post('/api/auth/login', {
       username: username.value,
       password: password.value,
     });

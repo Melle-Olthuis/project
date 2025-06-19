@@ -124,12 +124,12 @@ function addNote() {
     tagsInput: '',
   };
   notes.value.unshift(newNote);
-  axios.post('http://localhost:8080/api/notes', newNote).catch((err) => console.error(err));
+  axios.post('/api/notes', newNote).catch((err) => console.error(err));
 }
 
 function deleteNote(id) {
   notes.value = notes.value.filter((note) => note.id !== id);
-  axios.delete(`http://localhost:8080/api/notes/${id}`).catch((err) => console.error(err));
+  axios.delete(`/api/notes/${id}`).catch((err) => console.error(err));
 }
 
 function archiveNote(note) {
@@ -154,7 +154,7 @@ onMounted(() => {
     noteId = Math.max(...notes.value.map((n) => n.id), 0) + 1
   } else {
     axios
-      .get('http://localhost:8080/api/notes')
+      .get('/api/notes')
       .then((response) => {
         notes.value = response.data.map((n) => ({
           ...n,
