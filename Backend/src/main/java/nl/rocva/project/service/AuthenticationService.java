@@ -1,7 +1,6 @@
 package nl.rocva.project.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,15 +13,23 @@ public class AuthenticationService {
     @Autowired
     private AuthenticationRepository authenticationRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public AuthenticationService() {
-        // Default constructor for Spring to use
+        // Default constructor for tests or Spring
+        this.passwordEncoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
     }
 
     public AuthenticationService(AuthenticationRepository authenticationRepository) {
         this.authenticationRepository = authenticationRepository;
+        this.passwordEncoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
     }
 
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    public AuthenticationService(AuthenticationRepository authenticationRepository, PasswordEncoder passwordEncoder) {
+        this.authenticationRepository = authenticationRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public String hashPassword(String plainPassword) {
         return passwordEncoder.encode(plainPassword);
@@ -40,7 +47,7 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Email already exists");
         }
 
-        String hashedPassword = hashPassword(plainPassword);
+        String hashedPassword = passwordEncoder.encode(plainPassword);
         User user = new User();
         user.setUsername(username);
         user.setEmail(email);
