@@ -33,12 +33,12 @@ const errorMessage = ref('');
 
 const handleSubmit = async () => {
   if (!username.value || !password.value) {
-    errorMessage.value = 'Please fill in all fields.';
+    errorMessage.value = 'Vul alle velden in.';
     return;
   }
 
   try {
-    const response = await axios.post('/api/auth/login', {
+    const response = await axios.post('http://localhost:8080/api/auth/login', {
       username: username.value,
       password: password.value,
     });
@@ -47,9 +47,9 @@ const handleSubmit = async () => {
     router.push('/');
   } catch (error) {
     if (error.response && error.response.status === 401) {
-      errorMessage.value = 'Invalid credentials.';
+      errorMessage.value = 'Ongeldige gebruikersnaam of wachtwoord.';
     } else {
-      errorMessage.value = 'Login failed. Please try again later.';
+      errorMessage.value = 'Login mislukt. Probeer het later opnieuw.';
     }
   }
 };
@@ -61,6 +61,8 @@ const handleSubmit = async () => {
   padding: var(--default-padding);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .form-group {
