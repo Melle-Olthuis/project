@@ -35,7 +35,7 @@ public class ChromeHeadlessTest {
     public void testPageTitle() {
         driver.get("https://google.com");
         String title = driver.getTitle();
-        assertEquals("Example Domain", title);
+        assertEquals("Google", title);
     }
 
     @Test
