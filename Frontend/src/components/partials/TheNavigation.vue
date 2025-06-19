@@ -5,7 +5,6 @@
         <li><router-link to="/" active-class="active-link" exact>Home</router-link></li>
         <li><router-link to="/about" active-class="active-link">About</router-link></li>
         <li><router-link to="/login" active-class="active-link">Login</router-link></li>
-        <li><router-link to="/register" active-class="active-link">Register</router-link></li>
       </ul>
     </div>
     <div class="nav-right">
