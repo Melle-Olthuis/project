@@ -72,7 +72,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
-import axios from 'axios';
+import api from '../api';
 import { useUserStore } from '../stores/user';
 
 const tagIcons = {
@@ -124,12 +124,12 @@ function addNote() {
     tagsInput: '',
   };
   notes.value.unshift(newNote);
-  axios.post('/api/notes', newNote).catch((err) => console.error(err));
+  api.post('/api/notes', newNote).catch((err) => console.error(err));
 }
 
 function deleteNote(id) {
   notes.value = notes.value.filter((note) => note.id !== id);
-  axios.delete(`/api/notes/${id}`).catch((err) => console.error(err));
+  api.delete(`/api/notes/${id}`).catch((err) => console.error(err));
 }
 
 function archiveNote(note) {
@@ -153,7 +153,7 @@ onMounted(() => {
     notes.value = JSON.parse(saved)
     noteId = Math.max(...notes.value.map((n) => n.id), 0) + 1
   } else {
-    axios
+    api
       .get('/api/notes')
       .then((response) => {
         notes.value = response.data.map((n) => ({

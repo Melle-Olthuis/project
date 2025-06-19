@@ -1,17 +1,20 @@
 <template>
-  <div class="login-page">
-    <h2>Login</h2>
-    <span>{{ welcomeMessage }}</span>
+  <div class="register-page">
+    <h2>Registreren</h2>
     <form @submit.prevent="handleSubmit">
       <div class="form-group">
         <label for="username">Username:</label>
-        <input type="text" id="username" v-model="username" required />
+        <input id="username" v-model="username" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input id="email" type="email" v-model="email" required />
       </div>
       <div class="form-group">
         <label for="password">Password:</label>
-        <input type="password" id="password" v-model="password" required />
+        <input id="password" type="password" v-model="password" required />
       </div>
-      <button type="submit">Login</button>
+      <button type="submit">Register</button>
       <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
     </form>
   </div>
@@ -19,44 +22,35 @@
 
 <script setup>
 import { ref } from 'vue';
-import api from '../api';
 import { useRouter } from 'vue-router';
-import { useUserStore } from '../stores/user';
+import api from '../api';
 
-const router = useRouter();
-const userStore = useUserStore();
-
-const welcomeMessage = 'Voer je gegevens in om in te loggen';
 const username = ref('');
+const email = ref('');
 const password = ref('');
 const errorMessage = ref('');
+const router = useRouter();
 
 const handleSubmit = async () => {
-  if (!username.value || !password.value) {
+  if (!username.value || !email.value || !password.value) {
     errorMessage.value = 'Vul alle velden in.';
     return;
   }
-
   try {
-    const response = await api.post('/api/auth/login', {
+    await api.post('/api/auth/register', {
       username: username.value,
+      email: email.value,
       password: password.value,
     });
-
-    userStore.setUser(response.data.username, response.data.token || '');
-    router.push('/');
-  } catch (error) {
-    if (error.response && error.response.status === 401) {
-      errorMessage.value = 'Ongeldige gebruikersnaam of wachtwoord.';
-    } else {
-      errorMessage.value = 'Login mislukt. Probeer het later opnieuw.';
-    }
+    router.push('/login');
+  } catch (err) {
+    errorMessage.value = 'Registratie mislukt.';
   }
 };
 </script>
 
 <style scoped>
-.login-page {
+.register-page {
   background-color: var(--color-background);
   padding: var(--default-padding);
   border-radius: 8px;
@@ -64,18 +58,15 @@ const handleSubmit = async () => {
   max-width: 400px;
   margin: 0 auto;
 }
-
 .form-group {
   margin-bottom: 1rem;
 }
-
 input {
   width: 100%;
   padding: 0.5rem;
   border: 1px solid var(--color-secondary);
   border-radius: 4px;
 }
-
 button {
   background-color: var(--color-primary);
   color: white;
@@ -84,20 +75,11 @@ button {
   border-radius: 4px;
   cursor: pointer;
 }
-
 button:hover {
   background-color: hsla(160, 100%, 37%, 0.8);
 }
-
 .error {
   color: red;
   margin-top: 1rem;
-}
-
-span {
-  font-weight: bold;
-  display: block;
-  text-align: center;
-  margin-bottom: 1rem;
 }
 </style>
