@@ -33,5 +33,5 @@ npm install
 npm run dev
 ```
 
-Once both servers are running, open the application in your browser. Gebruik de registerpagina om een nieuw account aan te maken en log vervolgens in via de loginpagina.
+Once both servers are running, open the application in your browser. The registration page has been removed, so make sure to create users directly in the database. Passwords must be stored using BCrypt hashing. You can generate a hash using a small Spring snippet with `BCryptPasswordEncoder` and insert the resulting value into the `user` table before logging in.
 
