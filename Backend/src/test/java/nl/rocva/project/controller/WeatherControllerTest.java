@@ -8,15 +8,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import nl.rocva.project.service.WeatherService;
+import nl.rocva.project.security.JwtService;
 
 /**
  * Tests for the WeatherController using MockMvc and mocked WeatherService
  */
 @WebMvcTest(WeatherController.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class WeatherControllerTest {
 
   @Autowired
@@ -24,6 +27,9 @@ public class WeatherControllerTest {
 
   @MockBean
   private WeatherService weatherService;
+
+  @MockBean
+  private JwtService jwtService;
 
   @BeforeEach
   public void setup() {
